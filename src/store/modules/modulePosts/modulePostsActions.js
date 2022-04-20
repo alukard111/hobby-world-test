@@ -78,7 +78,6 @@ export default {
       const response = await fetch(`https://dreddyi.ru/json/posts/${ payload.id }`, {
         method: 'DELETE'
       })
-      console.log(state.postList[payload.index], ' state.postList[payload.index]')
       const json = await response.json()
     } catch (error) {
       console.log(error)

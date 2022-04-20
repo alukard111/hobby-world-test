@@ -85,6 +85,7 @@ li {
       display: flex;
       justify-content: center;
       padding: 0;
+      flex-wrap: wrap;
 		}
 
 		&__arrow {

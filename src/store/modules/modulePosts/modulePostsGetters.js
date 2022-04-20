@@ -3,11 +3,13 @@ import { returnStatusTypeList } from '@/helpers/common.js'
 export default {
   GET_POST_LIST(state, getters, rootState) {
     const whatActivePage = rootState.pagination.pagination.find((page) => { return page.isActivePage ? true : false })
-
-    let firstIndex = Number(whatActivePage?.numberPage) === 1 ? 0 : (Number(whatActivePage?.numberPage)-1)*10
-    let lastIndex = Number(whatActivePage?.numberPage) * 10
-
-    return state.postList.slice(firstIndex, lastIndex)
+ 
+    if (typeof whatActivePage?.numberPage === 'string') {
+      let firstIndex = Number(whatActivePage.numberPage) === 1 ? 0 : (Number(whatActivePage.numberPage)-1)*10
+      let lastIndex = Number(whatActivePage.numberPage) * 10
+      
+      return state.postList.slice(firstIndex, lastIndex)
+    }
   },
 
   GET_TITLE_POST: state => index => {

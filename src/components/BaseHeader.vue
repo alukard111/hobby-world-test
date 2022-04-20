@@ -26,11 +26,15 @@
       </nav>
       <template>
         <div class="base-header__btn-loader-wrapper base-btn">
-          <button class="base-header__btn-loader" @click="loadPosts()">Загрузить</button>
+          <button 
+            :class="{'base-header__btn-loader_loading' : this.loadingPost }"
+            class="base-header__btn-loader"
+            @click="loadPosts()"
+          >
+          Загрузить</button>
         </div>
       </template>
     </div>
-    <!-- сортировка -->
     <div class="base-header__sort-title">
       <span class="base-header__sort-title-text">
         Сортировать по:
@@ -64,6 +68,10 @@
 import { mapState, mapActions } from "vuex"
 
 export default {
+  data: () => ({
+    loadingPost: false
+  }),
+
   mounted() {
     this.checkItFilterInLocalStorage('typeGroupLists')
     this.checkItFilterInLocalStorage('sortList')
@@ -89,10 +97,13 @@ export default {
     }),
 
     async loadPosts() {
+      this.loadingPost = true
       await this.writePostsList()
       this.actionSetPagination()
       this.setFilterInLocalStorage('typeGroupLists')
       this.setFilterInLocalStorage('sortList')
+      this.loadingPost = false
+      
     },
 
     checkItFilterInLocalStorage(keyName) {
@@ -197,6 +208,7 @@ a {
     border: none;
     border-radius: 5px;
 
+    position:relative;
     color: $white;
     transition: background 0.2s;
     cursor: pointer;
@@ -209,6 +221,33 @@ a {
 
     &_active {
       background: $blueActive;
+    }
+    &_loading {
+      &:before {
+        content: 'Загрузка...';
+        display: inline;
+        position: absolute;
+        left: 0;
+        top: -25px;
+        font-size: 20px;
+        z-index: 2;
+        text-shadow: 5px 5px 5px $blueActive;
+        color: $grayItemColor;
+        animation: ping 1s infinite;
+        transition: all 0.2s;
+
+        @keyframes ping {
+          0% {
+            opacity: 1;
+          }
+          50% {
+            opacity: 0.5;
+          }
+          100% {
+            opacity: 1;
+          }
+        }
+      }
     }
   }
 
